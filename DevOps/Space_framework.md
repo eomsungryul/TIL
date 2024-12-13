@@ -125,7 +125,7 @@ SPACE는 다음 다섯 가지 차원으로 구성된다.
 ## 결론
 SPACE 프레임워크는 인시던트 관리 프로세스를 다각적으로 조명하고, 단순 문제 해결 건수 이상의 통찰을 제공한다. 이를 통해 SRE 및 관련 팀의 웰빙, 시스템 안정성, 협업 효율성, 활동 성과, 프로세스 흐름 전반을 균형 잡힌 시각으로 이해하고 개선할 수 있다.
 
-## 참고 자료
+## 참고 자료!
 - [SPACE 프레임워크 논문 (GitHub Blog)](https://github.blog/wp-content/uploads/2021/05/SPACE_Paper.pdf)
 - [SonarQube 공식 웹사이트](https://www.sonarqube.org/)
 - [Datadog 공식 웹사이트](https://www.datadoghq.com/)
