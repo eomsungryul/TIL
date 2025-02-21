@@ -70,18 +70,67 @@ kubectl apply -f redis.yaml
 ## 🚀 Deployment
 ✅ **실무에서는 거의 항상 Deployment 사용** (ReplicaSet 직접 사용 X)
 
-1️⃣ Deployment를 생성하면 **내부적으로 ReplicaSet이 자동 생성**됨.  
-2️⃣ ReplicaSet은 **정해진 개수의 Pod를 실행 및 유지**.  
-3️⃣ 새로운 버전(image 변경 등)으로 업데이트하면:
-- 새로운 **ReplicaSet이 생성**됨.
-- **Rolling Update 진행** (점진적 트래픽 이동).
-- 기존 **ReplicaSet의 Pod가 점진적으로 삭제**됨.  
-  4️⃣ 문제가 발생하면 **Deployment 롤백 가능**.
+- 1️⃣ Deployment를 생성하면 **내부적으로 ReplicaSet이 자동 생성**됨.  
+- 2️⃣ ReplicaSet은 **정해진 개수의 Pod를 실행 및 유지**.  
+- 3️⃣ 새로운 버전(image 변경 등)으로 업데이트하면:
+  - 새로운 **ReplicaSet이 생성**됨.
+  - **Rolling Update 진행** (점진적 트래픽 이동).
+  - 기존 **ReplicaSet의 Pod가 점진적으로 삭제**됨.  
+- 4️⃣ 문제가 발생하면 **Deployment 롤백 가능**.
 
 ---
 
 ## 🔗 Service
 ✅ Pod 간 통신을 위한 네트워크 서비스 제공  
 ✅ 기본 포트 범위: `30,000` ~ `32,767`
+
+---
+
+## 🏛️ 명령형 vs 선언형
+
+✅ **선언형이 실무에서는 더 선호됨** 😆
+- YAML을 선언하고 `kubectl apply` 명령어로 적용하면 자동으로 관리됨.
+- 유지보수와 재현성이 뛰어남.
+
+✅ **시험에서는 명령형 사용 빈도가 높음**
+- 빠르게 특정 리소스를 생성/수정할 때 사용.
+
+---
+
+## 🚀 스케줄러
+
+- **이미 Node에 있는 Pod는 이동할 수 없음** → 이동하려면 **삭제 후 재배포**해야 함.
+- 특정 노드에 배치하려면 `nodeName` 사용.
+
+---
+
+## ⚠️ Taint & Toleration
+
+- **Toleration** → 특정 Taint가 설정된 노드에서도 실행 가능하게 함.
+- Taint가 있는 노드에 Pod이 배치되는 것을 보장하지 않음.
+- **마스터 노드는 기본적으로 Taint가 설정됨**.
+
+### ✅ **Taint 설정 명령어**
+```sh  
+kubectl taint nodes {nodeName} {key}={value}:{effect}  
+```  
+➡️ `-`를 붙이면 해당 taint 제거 가능!
+
+---
+
+## 🔗 Node Affinity
+
+✅ **기본적인 Node 배치 정책**
+
+| 상태  | 필수 여부 | 실행 상태 |
+|-------|----------|----------|
+| `requiredDuringSchedulingIgnoredDuringExecution` | 필수(required) | 실행 중 변경 사항 무시 |
+| `preferredDuringSchedulingIgnoredDuringExecution` | 선호(preferred) | 실행 중 변경 사항 무시 |
+| `requiredDuringSchedulingRequiredDuringExecution` | 필수(required) | 실행 중에도 강제 적용 (계획됨) |
+| `preferredDuringSchedulingRequiredDuringExecution` | 선호(preferred) | 실행 중에도 강제 적용 (계획됨) |
+
+✅ **Affinity 적용 시 라벨이 변경되더라도 기존 배치는 유지됨.**
+
+![Node Affinity](CKA_img/Node_affinity.png)
 
 ---
