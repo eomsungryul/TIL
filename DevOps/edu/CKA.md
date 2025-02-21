@@ -1,53 +1,87 @@
-# CKA 스터디
-1주차 교육명
+# 📌 CKA 스터디 - 1주차
 
-Prepare for the Certified Kubernetes Administrators Certification with live practice tests right in your browser - CKA
+## 🎯 교육명
+**Prepare for the Certified Kubernetes Administrators Certification with live practice tests right in your browser - CKA**
 
-- 20KODE 코드로 20% 디스카운트 할 수 있음
-- https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/?cjdata=MXxOfDB8WXww&cjevent=26b1fe66ea7111ef80bb00230a18ba74&utm_source=CJ&utm_medium=affiliate
-- 445달러?..
+🔹 **할인 코드**: `20KODE` (20% 할인 가능)  
+🔹 **수강 링크**: [CKA 공식 사이트](https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/?cjdata=MXxOfDB8WXww&cjevent=26b1fe66ea7111ef80bb00230a18ba74&utm_source=CJ&utm_medium=affiliate)  
+🔹 **비용**: 약 `$445`  
+🔹 **GitHub 코스 저장소**: [바로가기](https://github.com/kodekloudhub/certified-kubernetes-administrator-course)
 
-- [깃허브 코스 저장소](https://github.com/kodekloudhub/certified-kubernetes-administrator-course)
+---
 
+## 🗃️ Etcd
+- **Key-Value Store 형식**의 데이터 저장소
+- 실행 시 **`2379` 포트**에서 동작
 
-Etcd는 키 값 형식으로 정보를 저장하는 데이터베이스
+---
 
-마스터 워커노드 역할
+## 🖥️ Kubernetes 주요 컴포넌트
 
-CRI라는 인터페이스를 소개했죠
-네 CRI는 어떤 공급업체든 쿠버네티스의
-컨테이너 런타임으로 작업하게 해줍니다
+### 🏛️ 마스터 노드 & 워커 노드 역할
+✅ **마스터 노드**
+- `etcd` → 쿠버네티스 상태 저장소
+- `kube-controller-manager` → 컨트롤러 관리
+- `kube-scheduler` → 파드 배치
 
-etcd 
-key value store
-실행 시 2379 포트에 서 실행 
+✅ **워커 노드**
+- `kubelet` → 노드에 수동 설치, 노드 등록
+- `kube-proxy` → Pod 간 네트워크 통신
 
-kube controller 
+🔹 **CRI(Container Runtime Interface)**
+- 다양한 컨테이너 런타임을 쿠버네티스에서 사용할 수 있도록 도와주는 인터페이스
 
-schedular pod 배치
+---
 
-kubelet 수동 설치해야함 노드 등록 수단 
+## 📜 YAML 기본 구조
+쿠버네티스 리소스 정의 시 4가지 주요 필드
 
-kube-proxy pod 간 소통
-yaml apiVersion kind metadata spec 총 네가지
+```yaml  
+apiVersion: # API 버전  
+kind:       # 리소스 종류 (Deployment, Pod 등)  
+metadata:   # 이름, 라벨 등 메타데이터  
+spec:       # 상세 스펙  
+```
 
-실습1 
-kubectl run redis --image=redis123 --dry-run -o yaml >> redis.yaml
-kubectl apply -f redis.yaml
-자동으로 만들어줌
+---
 
+## 🛠️ 실습 1 - Redis Pod 생성
 
-replica 관련 
-v1 은 replication controller 를 사용하지만 replica set을 권장
-kubectl <ex) get> po, no, deploy, rs, ds 등등의 단축어가 있습니다
-추후에 실습해보기
+```sh  
+kubectl run redis --image=redis123 --dry-run=client -o yaml > redis.yaml  
+kubectl apply -f redis.yaml  
+```
 
-apply -f 와 replace -f의 차이
-k get all -A 전체보기 
+✅ `--dry-run` 옵션을 사용하면 리소스 파일을 자동 생성 가능
 
-deployment 
+---
 
+## 🔁 ReplicaSet & ReplicationController
+- `v1`에서는 **ReplicationController**를 사용하지만, **ReplicaSet을 권장**
+- 리소스 단축어 지원:  
+  ```sh  
+  kubectl get po, no, deploy, rs, ds  
+  ```
+- `apply -f` vs `replace -f` 차이점 실습 필요
+- `kubectl get all -A` → 모든 리소스 조회
 
-service
+---
 
+## 🚀 Deployment
+✅ **실무에서는 거의 항상 Deployment 사용** (ReplicaSet 직접 사용 X)
 
+1️⃣ Deployment를 생성하면 **내부적으로 ReplicaSet이 자동 생성**됨.  
+2️⃣ ReplicaSet은 **정해진 개수의 Pod를 실행 및 유지**.  
+3️⃣ 새로운 버전(image 변경 등)으로 업데이트하면:
+- 새로운 **ReplicaSet이 생성**됨.
+- **Rolling Update 진행** (점진적 트래픽 이동).
+- 기존 **ReplicaSet의 Pod가 점진적으로 삭제**됨.  
+  4️⃣ 문제가 발생하면 **Deployment 롤백 가능**.
+
+---
+
+## 🔗 Service
+✅ Pod 간 통신을 위한 네트워크 서비스 제공  
+✅ 기본 포트 범위: `30,000` ~ `32,767`
+
+---
