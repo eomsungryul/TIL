@@ -155,3 +155,29 @@ spec:
 
 이 내용을 바탕으로 쿠버네티스를 단계적으로 도입하고 실무에 적용해보자!
 
+```mermaid
+sequenceDiagram
+    participant User as 사용자
+    participant KubeCtl as kubectl
+    participant API_Server as API Server
+    participant Scheduler as Scheduler
+    participant Controller as Controller Manager
+    participant Kubelet as Kubelet
+    participant KubeProxy as Kube Proxy
+    participant Pod as Pod
+
+    User->>KubeCtl: kubectl apply -f deployment.yaml
+    KubeCtl->>API_Server: 요청 전송 (REST API)
+    API_Server->>etcd: 상태 저장
+    API_Server->>Controller: 컨트롤러 활성화
+    Controller->>Scheduler: 스케줄링 요청
+    Scheduler->>API_Server: 적절한 노드 선택
+    API_Server->>Kubelet: Pod 생성 요청
+    Kubelet->>Container_Runtime: 컨테이너 실행 요청
+    Container_Runtime->>Pod: 컨테이너 실행
+    Pod->>KubeProxy: 네트워크 설정 요청
+    KubeProxy->>Pod: 서비스 네트워크 구성 완료
+    Pod->>User: 애플리케이션 서비스 실행 완료
+```
+
+request nolimits 가 제일 이상적 

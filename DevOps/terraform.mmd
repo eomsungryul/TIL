@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant User as 개발자
+    participant Terraform as Terraform CLI
+    participant AWS as AWS 클라우드
+
+    User->>Terraform: terraform init
+    Terraform->>AWS: AWS Provider 및 모듈 초기화
+
+    User->>Terraform: terraform plan
+    Terraform->>AWS: 현재 상태 조회
+    AWS->>Terraform: 현재 인프라 상태 반환
+    Terraform->>User: 변경 사항 출력
+
+    User->>Terraform: terraform apply
+    Terraform->>AWS: 리소스 생성/변경 요청
+    AWS->>Terraform: 변경 결과 반환
+    Terraform->>User: 적용 완료 메시지 출력
