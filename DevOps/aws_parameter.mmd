@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant App as ECS 컨테이너 내부의 Spring 애플리케이션
+    participant SSM as AWS Parameter Store
+    participant RDS as Amazon RDS (MySQL)
+    participant IAM as AWS IAM
+
+    App->>SSM: ECS 태스크 역할로 AWS Parameter Store 접근 권한 요청
+    SSM->>IAM: IAM 을 통한 권한 확인
+    note left of IAM: ECS_SA_TaskRole 중 ECSParameterStorePolicy 사용
+    IAM-->>SSM: 권한 승인
+
+    SSM-->>App: AWS Parameter Store의 데이터 전달
+    note left of SSM: JDBC URL, 사용자명 등을 반환
+
+    App->>RDS: AWS JDBC Wrapper를 통해 DB 연결 시도
+    RDS->>IAM: ECS 태스크 역할로 DB 접근 권한 확인
+    note left of IAM: ECS_SA_TaskRole 중 RDS_IAM_AUTH_FOR_TimfMessage 사용
+    IAM-->>RDS: 임시 보안 자격 증명 반환
+    RDS-->>App: DB 연결 승인

@@ -181,3 +181,8 @@ sequenceDiagram
 ```
 
 request nolimits 가 제일 이상적 
+
+
+Static Pods 
+옵션 이름은 pod-manifest-path
+가장 디폴트는 /etc/Kubernetes/manifests 이름을 보아하니 리눅스고 윈도우일 경우엔 잘 모르겠음
