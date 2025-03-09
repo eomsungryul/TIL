@@ -134,3 +134,36 @@ kubectl taint nodes {nodeName} {key}={value}:{effect}
 ![Node Affinity](CKA_img/Node_affinity.png)
 
 ---
+## 🔹 Scheduling
+### ✅ **request nolimits 가 제일 이상적**
+- Kubernetes에서는 `requests`와 `limits`를 설정하여 Pod의 리소스 사용을 제어할 수 있음.
+- 하지만 **이상적인 설정은 request는 설정하되, limits는 설정하지 않는 것** (`request nolimits`).
+- 이유:
+  - **requests는 최소한의 리소스를 보장**하여 스케줄링이 가능하도록 함.
+  - **limits를 설정하면 CPU Throttling(제한)이 걸릴 수 있어 성능 저하 발생 가능**.
+  - 실제 운영 환경에서는 **CPU limits를 설정하지 않는 것이 일반적인 모범 사례**.
+  - 하지만 메모리(`memory limits`)는 OOM(Out of Memory) 방지를 위해 설정하는 경우가 많음.
+
+## 🔹 Static Pods
+### ✅ **Static Pods란?**
+- **Kubelet이 직접 관리하는 Pod으로, API Server를 거치지 않고 실행됨.**
+- 일반적인 Pod과 다르게 **Kubernetes 스케줄러의 영향을 받지 않음**.
+- **마스터 노드의 시스템 데몬이나 중요한 Pod을 실행할 때 사용**.
+
+### ✅ **Static Pod의 주요 특징**
+- **API Server와 무관하게 Kubelet이 직접 실행**.
+- **다른 노드로 이동하지 않음 (Re-Scheduling 불가)**.
+- **파일 시스템에 존재하는 YAML을 기반으로 실행됨**.
+- **Static Pod이 삭제되면 Kubelet이 다시 생성**.
+
+### ✅ **Static Pod의 설정 경로**
+- 옵션 이름: `pod-manifest-path`
+- 기본적으로 **Linux에서는 `/etc/kubernetes/manifests/` 경로**에서 Static Pod을 찾음.
+- Windows 환경에서는 기본 경로가 다를 수 있음.
+
+## 📌 Kubernetes PVC (Persistent Volume Claim) 정리
+✅ **PVC(Persistent Volume Claim)는 Pod이 저장소를 요청하는 방식**  
+✅ **PVC는 PersistentVolume(PV)와 연결되어 데이터를 저장**  
+✅ **StorageClass를 사용하면 PV를 동적으로 생성할 수 있음**  
+✅ **PVC를 활용하면 Pod이 재시작되더라도 데이터를 유지할 수 있음!**
+

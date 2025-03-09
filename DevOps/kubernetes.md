@@ -179,10 +179,3 @@ sequenceDiagram
     KubeProxy->>Pod: 서비스 네트워크 구성 완료
     Pod->>User: 애플리케이션 서비스 실행 완료
 ```
-
-request nolimits 가 제일 이상적 
-
-
-Static Pods 
-옵션 이름은 pod-manifest-path
-가장 디폴트는 /etc/Kubernetes/manifests 이름을 보아하니 리눅스고 윈도우일 경우엔 잘 모르겠음
