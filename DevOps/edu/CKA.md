@@ -167,3 +167,25 @@ kubectl taint nodes {nodeName} {key}={value}:{effect}
 ✅ **StorageClass를 사용하면 PV를 동적으로 생성할 수 있음**  
 ✅ **PVC를 활용하면 Pod이 재시작되더라도 데이터를 유지할 수 있음!**
 
+## ConfigMap 
+yaml 에 envForm 사용 configmap name 적용
+k replace --force -f /tmp/kubectl-edit-xxx.yaml 
+삭제되고 생성
+
+ConfigMap 시크릭 코드는 git에 넣지않기 code 
+
+## CKAD에서 배우는 것
+Multi-container Pods Design Patterns
+Self Healing Applications
+
+## cluster maintenance
+
+kubeadm 으로 이용함 
+kubelet은 수동으로해야함 
+
+## etcd backup 
+ETCDCTL_API=3 명령어 export ETCDCTL_API=3  후에 그냥 etcd 가능
+
+
+
+
